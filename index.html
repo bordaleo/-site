@@ -1,340 +1,152 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Gabriella — Nosso Mundo</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gabriella — Nosso Cantinho</title>
 <style>
-  :root{
-    --bg-1: #0f1724;
-    --bg-2: #2b1462;
-    --accent: #ff6cab;
-    --accent-2: #ffb3cf;
-    --card: rgba(255,255,255,0.04);
-    --glass: rgba(255,255,255,0.06);
-    --glass-2: rgba(255,255,255,0.03);
-    --text: #f4f4f8;
-    --muted: #c9c5d6;
-    --shadow: 0 10px 30px rgba(2,6,23,0.6);
-    --radius: 16px;
-  }
-  *{box-sizing:border-box}
-  html,body{height:100%; margin:0; font-family: Inter, "Segoe UI", Arial, sans-serif; background:
-    radial-gradient(800px 400px at 10% 10%, rgba(255,107,171,0.06), transparent),
-    linear-gradient(180deg,var(--bg-1),var(--bg-2)); color:var(--text); -webkit-font-smoothing:antialiased;}
-  a{color:inherit; text-decoration:none}
-  button{font:inherit; cursor:pointer}
-  .app { min-height:100vh; display:grid; grid-template-columns:300px 1fr; gap:28px; padding:28px; align-items:start; }
-  .sidebar{
-    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-    border-radius: calc(var(--radius) + 4px); padding:20px; box-shadow: var(--shadow);
-    position:relative; overflow:hidden; border:1px solid rgba(255,255,255,0.03);
-  }
-  .brand{ display:flex; gap:12px; align-items:center; }
-  .logo{
-    width:56px; height:56px; border-radius:12px; background:linear-gradient(135deg,var(--accent),var(--accent-2));
-    display:flex; align-items:center; justify-content:center; font-weight:700; color:#fff; font-size:20px;
-    box-shadow: 0 6px 18px rgba(255,107,171,0.13);
-  }
-  .brand h1{font-size:18px;margin:0}
-  .brand p{margin:0;font-size:12px;color:var(--muted)}
-  .sidebar .hint{ margin-top:18px; background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,0.02); font-size:13px;color:var(--muted);}
-  .pin { margin-top:18px; display:grid; grid-template-columns: repeat(3,1fr); gap:10px; }
-  .pin button{ background:var(--glass); border:1px solid rgba(255,255,255,0.03); color:var(--text); padding:14px 10px; border-radius:12px; font-size:18px; transition: transform .12s ease, background .12s ease; }
-  .pin button:active{ transform:translateY(2px); }
-  .pin .ok{ grid-column: span 3; background:linear-gradient(90deg,var(--accent),var(--accent-2)); color:#111; font-weight:700; }
-  .pinDisplay{ margin-top:14px; padding:10px 12px; border-radius:12px; background: linear-gradient(90deg, rgba(255,255,255,0.02), transparent); font-size:20px; text-align:center; letter-spacing:12px; color:var(--muted); }
-  .nav{ margin-top:20px; display:flex; flex-direction:column; gap:8px; }
-  .nav button{ text-align:left; padding:10px 12px; border-radius:10px; background:transparent; color:var(--muted); border:1px dashed rgba(255,255,255,0.02); transition: all .15s ease; }
-  .nav button.active{ background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); color:var(--text); border-style:solid; border-color:rgba(255,107,171,0.12); }
-  .content { min-height:100vh; display:flex; flex-direction:column; gap:18px; }
-  .welcome{ display:flex; justify-content:space-between; align-items:center; gap:12px; }
-  .welcome .title{ font-size:22px; margin:0; }
-  .welcome .subtitle{ color:var(--muted); font-size:14px }
-  .grid{ display:grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap:18px; }
-  .card{ background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02)); border-radius:14px; padding:18px; box-shadow: 0 8px 24px rgba(2,6,23,0.6); border:1px solid rgba(255,255,255,0.03); transition: transform .18s ease, box-shadow .18s ease; cursor:pointer; }
-  .card:hover{ transform: translateY(-6px); box-shadow: 0 16px 40px rgba(2,6,23,0.8); }
-  .card h3{ margin:0 0 8px 0; font-size:16px; color:var(--accent-2) }
-  .card p{ margin:0; color:var(--muted) }
-  .gallery{ display:grid; gap:12px; }
-  .gallery .item{ display:flex; gap:12px; align-items:center; background:var(--card); padding:10px; border-radius:10px; border:1px solid rgba(255,255,255,0.02) }
-  .gallery img, .gallery video{ width:120px; height:80px; object-fit:cover; border-radius:8px; flex-shrink:0; }
-  .gallery .meta{ color:var(--muted); font-size:14px }
-  .player{ display:flex; align-items:center; gap:12px; background:linear-gradient(90deg, rgba(255,255,255,0.02), transparent); padding:8px 10px; border-radius:10px; border:1px solid rgba(255,255,255,0.02); }
-  .player .cover{ width:56px; height:56px; border-radius:8px; overflow:hidden; flex-shrink:0; }
-  .player .cover img{ width:100%; height:100%; object-fit:cover; display:block }
-  .player .meta{ flex:1; text-align:left }
-  .player .actions{ display:flex; gap:8px; align-items:center }
-  .btnCircle{ width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--glass);border:1px solid rgba(255,255,255,0.02);cursor:pointer;}
-  .counter{ display:flex; gap:12px; align-items:center; flex-wrap:wrap; }
-  .timeUnit{ background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); padding:12px;border-radius:10px; min-width:80px; text-align:center }
-  .timeUnit .num{ font-size:22px; font-weight:800; color:var(--accent) }
-  .timeUnit .lbl{ font-size:12px; color:var(--muted); text-transform:uppercase; margin-top:6px }
-  .envelopeWrap{ display:flex; gap:18px; align-items:flex-start; flex-wrap:wrap }
-  .envelopeCard{ background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); padding:18px; border-radius:12px; min-width:320px; border:1px solid rgba(255,255,255,0.02) }
-  .envelope{ width:300px; height:180px; position:relative; perspective:1000px; cursor:pointer }
-  .env-back, .env-front{ position:absolute; inset:0; border-radius:8px; overflow:hidden }
-  .env-back{ background:linear-gradient(180deg,#fff6fb,#ffeef8); transform: translateZ(-1px); }
-  .env-flap{ position:absolute; top:0; left:0; right:0; height:60%; background:linear-gradient(180deg,#ffb3cf,#ff6cab); clip-path:polygon(0 0,100% 0,50% 100%); transform-origin: top; transition: transform .9s cubic-bezier(.2,.8,.2,1); }
-  .env-front{ background:linear-gradient(180deg,#fff0f6,#fff6fb); clip-path: polygon(0 45%,100% 45%,100% 100%,0 100%); display:block; }
-  .letter{ position:absolute; left:6%; right:6%; bottom:2%; height:88%; background:#fff; border-radius:8px; transform: translateY(36%); opacity:0; padding:12px; overflow:auto; box-shadow: 0 10px 30px rgba(2,6,23,0.25); transition: all .9s cubic-bezier(.2,.8,.2,1); }
-  .envelope.open .env-flap{ transform: rotateX(180deg) translateY(-8px) }
-  .envelope.open .letter{ transform: translateY(-10%); opacity:1 }
-  .hearts{ position:relative; height:120px; overflow:visible }
-  .heart{ position:absolute; width:14px; height:14px; transform: rotate(45deg); opacity:0; }
-  .heart::before,.heart::after{ content:''; position:absolute; width:14px;height:14px;border-radius:50%;background:var(--accent); }
-  .heart::before{ left:-7px; top:0 }
-  .heart::after{ left:0; top:-7px }
-  .spoiler{ display:flex; flex-direction:column; gap:8px; align-items:center; justify-content:center; padding:12px; border-radius:10px; }
-  .spoiler button{ background:linear-gradient(90deg,var(--accent),var(--accent-2)); border:none; color:#111; padding:10px 14px; border-radius:10px; cursor:pointer; }
-  @media (max-width:860px){ .app{ grid-template-columns:1fr; padding:18px; } .sidebar{ order:2 } }
+  /* ====== Reset básico ====== */
+  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Arial', sans-serif; }
+  body { display: flex; min-height: 100vh; background: #f5f0ff; color: #1b1b2f; }
+
+  /* ====== Menu lateral ====== */
+  nav { width: 250px; background: #6a0dad; color: #fff; padding: 20px; display: flex; flex-direction: column; }
+  nav h2 { margin-bottom: 20px; text-align: center; }
+  nav a { color: #fff; text-decoration: none; padding: 10px; margin: 5px 0; border-radius: 5px; transition: background 0.3s; }
+  nav a:hover { background: rgba(255,255,255,0.2); }
+
+  /* ====== Conteúdo principal ====== */
+  main { flex: 1; padding: 30px; overflow-y: auto; }
+
+  /* ====== Seções ====== */
+  section { margin-bottom: 50px; }
+  h1, h2 { margin-bottom: 20px; }
+  p { margin-bottom: 15px; line-height: 1.6; }
+
+  /* ====== Botões ====== */
+  button { padding: 10px 20px; border: none; border-radius: 5px; background: #6a0dad; color: #fff; cursor: pointer; transition: background 0.3s; }
+  button:hover { background: #52008b; }
+
+  /* ====== Quiz ====== */
+  .quiz-question { margin-bottom: 10px; }
+  .quiz-answer { margin: 5px 0; }
+
+  /* ====== Lista de coisas que amo ====== */
+  .love-list { list-style: none; padding-left: 0; }
+  .love-list li { background: #e0c6ff; margin: 5px 0; padding: 10px; border-radius: 5px; }
 </style>
 </head>
 <body>
-<div class="app" id="appRoot">
 
-  <!-- SIDEBAR / LOGIN -->
-  <aside class="sidebar" id="sidebar">
-    <div class="brand">
-      <div class="logo">G</div>
-      <div>
-        <h1>Gabriella 💜</h1>
-        <p>Nosso mundo interativo</p>
-      </div>
-    </div>
+<!-- MENU LATERAL -->
+<nav>
+  <h2>Nosso Cantinho</h2>
+  <a href="#sobre">Sobre Nós</a>
+  <a href="#quiz">Quiz Sobre Nós</a>
+  <a href="#coisas">Coisas que Amo em Você</a>
+  <a href="#mensagens">Mensagens Românticas</a>
+  <a href="#imagens">Galeria</a>
+</nav>
 
-    <div class="hint" id="greeting">Bem-vinda — digite a senha para entrar</div>
-    <div class="pinDisplay" id="pinDisplay">••••••</div>
-
-    <div class="pin" id="pinpad" aria-label="Teclado numérico">
-      <button data-key="1">1</button>
-      <button data-key="2">2</button>
-      <button data-key="3">3</button>
-      <button data-key="4">4</button>
-      <button data-key="5">5</button>
-      <button data-key="6">6</button>
-      <button data-key="7">7</button>
-      <button data-key="8">8</button>
-      <button data-key="9">9</button>
-      <button data-key="back">⌫</button>
-      <button data-key="0">0</button>
-      <button class="ok" data-key="ok">ENTRAR</button>
-    </div>
-
-    <div class="nav" id="sidebarNav" style="display:none">
-      <button data-section="main" class="active">Inicio</button>
-      <button data-section="contador">Cronômetro</button>
-      <button data-section="momentos">Linha do Tempo</button>
-      <button data-section="quiz">Quiz Sobre Nós</button>
-      <button data-section="amores">Coisas que Amo em Você</button>
-      <button data-section="carta">Cartinha</button>
-      <button data-section="home" id="logoutBtn">Sair</button>
-    </div>
-
-    <div style="height:12px"></div>
-    <div style="font-size:12px;color:var(--muted)">Dica: é uma data especial.</div>
-  </aside>
-
-  <!-- MAIN -->
-  <main class="content" id="mainContent" aria-live="polite">
-
-    <!-- HOME -->
-    <section id="main" role="region">
-      <div class="welcome">
-        <div>
-          <h2 class="title">Olá, meu amor 💜</h2>
-          <div class="subtitle">Descubra nossas surpresas e momentos especiais.</div>
-        </div>
-        <div style="display:flex;gap:10px;align-items:center">
-          <div style="font-size:12px;color:var(--muted)">Data do começo:</div>
-          <div style="background:linear-gradient(90deg, rgba(255,255,255,0.02), transparent); padding:8px 10px;border-radius:10px;color:var(--muted)">15/08/2025</div>
-        </div>
-      </div>
-
-      <div class="grid" style="margin-top:18px">
-        <div class="card" data-action="open" data-section="contador">
-          <h3>Cronômetro ⏳</h3>
-          <p>Veja quanto tempo estamos juntos de forma divertida.</p>
-        </div>
-
-        <div class="card" data-action="open" data-section="quiz">
-          <h3>Quiz Sobre Nós 📝</h3>
-          <p>Testes e perguntas para ver quem lembra mais dos nossos momentos.</p>
-        </div>
-
-        <div class="card" data-action="open" data-section="amores">
-          <h3>Coisas que Amo em Você 💖</h3>
-          <p>Descubra ou reveja pequenos detalhes que te fazem única.</p>
-        </div>
-
-        <div class="card" data-action="open" data-section="carta">
-          <h3>Cartinha do Amor 💌</h3>
-          <p>Abra o envelope e veja os corações e mensagens românticas.</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- TIMELINE -->
-    <section id="momentos" style="display:none">
-      <div style="display:flex;justify-content:space-between;align-items:center;">
-        <h2 style="margin:0">Linha do Tempo</h2>
-        <div class="player" id="player1">
-          <div class="cover"><img src="PicPense.jpeg" alt="capa"></div>
-          <div class="meta"><strong>Pense em Mim</strong><div style="font-size:12px;color:var(--muted)">Jorge & Mateus</div></div>
-          <div class="actions"><button class="btnCircle" data-play="momentosAudio">▶</button></div>
-        </div>
-      </div>
-
-      <div class="gallery" style="margin-top:14px">
-        <div class="item">
-          <img src="us48.jpeg" alt="us1">
-          <div class="meta"><strong>Nosso Primeiro Encontro</strong><div style="margin-top:6px;color:var(--muted)">O dia que mudou tudo.</div></div>
-        </div>
-
-        <div class="item">
-          <img src="us1.jpeg" alt="us2">
-          <div class="meta"><strong>Primeira viagem</strong><div style="margin-top:6px;color:var(--muted)">Momentos incríveis juntos.</div></div>
-        </div>
-
-        <div class="item">
-          <video controls preload="metadata" poster="video1.jpeg"><source src="video1.mp4" type="video/mp4">Seu navegador não suporta vídeo.</video>
-          <div class="meta"><strong>Nosso vídeo especial</strong><div style="margin-top:6px;color:var(--muted)">Lembranças inesquecíveis.</div></div>
-        </div>
-
-        <div class="item spoiler">
-          <div style="text-align:center;width:100%">
-            <button id="showSpoiler">CLIQUE AQUI — SPOILER ❤️</button>
-            <div id="spoilerArea" style="display:none;margin-top:10px">
-              <img src="TheUs.jpeg" alt="spoiler" style="width:100%;border-radius:8px;margin-bottom:8px">
-              <div style="color:var(--muted)"><strong>Eu ainda vou casar com você. 💍</strong></div>
-            </div>
-          </div>
-<!-- MAIN CONTENT REFORMULADO -->
-<main class="content" id="mainContent" aria-live="polite">
-
-  <!-- WELCOME / HOME -->
-  <section id="main" role="region">
-    <div class="welcome">
-      <div>
-        <h2 class="title">Olá, meu amor 💜</h2>
-        <div class="subtitle">Escolha uma das caixinhas abaixo para explorar nosso mundo mágico.</div>
-      </div>
-      <div style="display:flex;gap:10px;align-items:center">
-        <div style="font-size:12px;color:var(--muted)">Data do começo:</div>
-        <div style="background:linear-gradient(90deg, rgba(255,255,255,0.02), transparent); padding:8px 10px;border-radius:10px;color:var(--muted)">15/08/2025</div>
-      </div>
-    </div>
-
-    <div class="grid" style="margin-top:18px">
-      <div class="card" data-action="open" data-section="quiz">
-        <h3>Quiz sobre Nós 💡</h3>
-        <p>Teste o quanto você se lembra dos nossos momentos especiais.</p>
-      </div>
-
-      <div class="card" data-action="open" data-section="coisas">
-        <h3>Coisas que Amo em Você 💖</h3>
-        <p>Uma lista interativa de pequenas coisas que me fazem te amar ainda mais.</p>
-      </div>
-
-      <div class="card" data-action="open" data-section="momentos">
-        <h3>Linha do Tempo ⏱️</h3>
-        <p>Fotos, vídeos e memórias — uma linha cheia de lembranças especiais.</p>
-      </div>
-
-      <div class="card" data-action="open" data-section="carta">
-        <h3>Cartinha do Amor 💌</h3>
-        <p>Uma carta com animação, corações e uma mensagem só sua.</p>
-      </div>
-    </div>
+<!-- CONTEÚDO PRINCIPAL -->
+<main>
+  <!-- SOBRE NÓS -->
+  <section id="sobre">
+    <h1>Sobre Nós</h1>
+    <p>Este cantinho é nosso. Aqui guardamos lembranças, risadas e momentos especiais. Tudo que criamos é para celebrar o que somos juntos.</p>
+    <p>Transformamos a nossa história em pequenas surpresas e interações que tornam o dia a dia mais divertido e romântico.</p>
   </section>
 
   <!-- QUIZ SOBRE NÓS -->
-  <section id="quiz" style="display:none">
-    <h2>Quiz sobre Nós 💡</h2>
-    <p style="color:var(--muted)">Responda corretamente e ganhe um prêmio especial.</p>
-    <div style="margin-top:12px; display:flex; flex-direction:column; gap:12px; max-width:400px;">
-      <div>
-        <div style="font-weight:600">1. Qual foi a nossa primeira viagem juntos?</div>
-        <button class="quizBtn" data-answer="errada">Praia da Lua</button>
-        <button class="quizBtn" data-answer="certa">Parque das Estrelas</button>
-        <button class="quizBtn" data-answer="errada">Cidade Encantada</button>
+  <section id="quiz">
+    <h1>Quiz Sobre Nós</h1>
+    <div id="quiz-container">
+      <div class="quiz-question">
+        <p>Qual nosso filme favorito juntos?</p>
+        <button onclick="responder('Correto!')">Resposta 1</button>
+        <button onclick="responder('Tente de novo!')">Resposta 2</button>
+        <button onclick="responder('Tente de novo!')">Resposta 3</button>
       </div>
-      <div>
-        <div style="font-weight:600">2. Qual música nos lembra do nosso primeiro encontro?</div>
-        <button class="quizBtn" data-answer="certa">"Pense em Mim"</button>
-        <button class="quizBtn" data-answer="errada">"Messy"</button>
-        <button class="quizBtn" data-answer="errada">"Those Eyes"</button>
-      </div>
-      <div id="quizResult" style="margin-top:12px;color:var(--accent)"></div>
     </div>
+    <p id="quiz-feedback"></p>
   </section>
 
   <!-- COISAS QUE AMO EM VOCÊ -->
-  <section id="coisas" style="display:none">
-    <h2>Coisas que Amo em Você 💖</h2>
-    <p style="color:var(--muted)">Deslize ou clique para ver cada motivo do meu amor.</p>
-    <div style="margin-top:12px; display:flex; flex-wrap:wrap; gap:12px;">
-      <div class="card" style="flex:1 1 200px;"><p>Seu sorriso que ilumina meu dia.</p></div>
-      <div class="card" style="flex:1 1 200px;"><p>O jeito que você me entende sem palavras.</p></div>
-      <div class="card" style="flex:1 1 200px;"><p>Como você me faz rir mesmo nos dias ruins.</p></div>
-      <div class="card" style="flex:1 1 200px;"><p>O cuidado que você tem com quem ama.</p></div>
-      <div class="card" style="flex:1 1 200px;"><p>Seu abraço que me faz sentir seguro.</p></div>
-    </div>
+  <section id="coisas">
+    <h1>Coisas que Amo em Você</h1>
+    <ul class="love-list" id="love-list">
+      <li>Seu sorriso</li>
+      <li>Seu jeito de me ouvir</li>
+      <li>Como você me faz rir</li>
+    </ul>
+    <input type="text" id="new-love" placeholder="Adicionar algo que amo..." />
+    <button onclick="adicionarAmor()">Adicionar</button>
   </section>
 
-  <!-- LINHA DO TEMPO -->
-  <section id="momentos" style="display:none">
-    <div style="display:flex;justify-content:space-between;align-items:center;">
-      <h2 style="margin:0">Linha do Tempo</h2>
-    </div>
-    <div class="gallery" style="margin-top:14px">
-      <div class="item">
-        <img src="us48.jpeg" alt="us1">
-        <div class="meta"><strong>Onde tudo começou</strong><div style="margin-top:6px;color:var(--muted)">Aquela primeira foto que guardo no coração.</div></div>
-      </div>
-      <div class="item">
-        <img src="us1.jpeg" alt="us2">
-        <div class="meta"><strong>A primeira mensagem</strong><div style="margin-top:6px;color:var(--muted)">O momento em que tudo mudou.</div></div>
-      </div>
-    </div>
+  <!-- MENSAGENS ROMÂNTICAS -->
+  <section id="mensagens">
+    <h1>Mensagens Românticas</h1>
+    <p id="romantic-msg">Clique no botão para receber uma mensagem especial 💌</p>
+    <button onclick="mensagemRomantica()">Gerar Mensagem</button>
   </section>
 
-  <!-- CARTINHA -->
-  <section id="carta" style="display:none">
-    <div class="envelopeCard">
-      <h2>Cartinha do Amor 💌</h2>
-      <div class="envelopeWrap">
-        <div class="envelope" id="envelope">
-          <div class="env-back"></div>
-          <div class="env-flap"></div>
-          <div class="env-front"></div>
-          <div class="letter">
-            <div style="font-size:15px;color:#2b2b2b">
-              <p>Minha gatinha,</p>
-              <p>Desde o primeiro olhar você virou minha melhor decisão. Cada dia contigo é uma nova sorte.</p>
-              <p>Prometo rir com você, cuidar e construir sonhos juntos. Você é minha inspiração.</p>
-              <p style="margin-top:12px;">Com amor,<br><strong>Seu Bobo Romântico</strong></p>
-            </div>
-          </div>
-        </div>
-        <div style="flex:1">
-          <div style="margin-bottom:10px;color:var(--muted)">Toque no envelope para abrir — há corações dentro!</div>
-          <div id="heartsAnchor" class="hearts" aria-hidden="true"></div>
-        </div>
-      </div>
-    </div>
+  <!-- GALERIA -->
+  <section id="imagens">
+    <h1>Galeria de Momentos</h1>
+    <p>Aqui você pode adicionar imagens de nossos melhores momentos.</p>
+    <input type="file" id="imageInput" accept="image/*" multiple />
+    <div id="gallery" style="display:flex; flex-wrap: wrap; gap:10px; margin-top:10px;"></div>
   </section>
-
 </main>
 
 <script>
-/* ====== QUIZ FUNCIONAL ====== */
-document.querySelectorAll('.quizBtn').forEach(btn=>{
-  btn.addEventListener('click', ()=>{
-    const res = btn.dataset.answer;
-    const result = document.getElementById('quizResult');
-    if(res==='certa') result.textContent = '✅ Acertou! Que incrível!';
-    else result.textContent = '❌ Quase! Tente a próxima.';
+  // ====== Função do Quiz ======
+  function responder(msg) {
+    document.getElementById('quiz-feedback').innerText = msg;
+  }
+
+  // ====== Adicionar coisas que amo ======
+  function adicionarAmor() {
+    const input = document.getElementById('new-love');
+    const value = input.value.trim();
+    if(value) {
+      const li = document.createElement('li');
+      li.textContent = value;
+      document.getElementById('love-list').appendChild(li);
+      input.value = '';
+    }
+  }
+
+  // ====== Mensagens Românticas ======
+  const mensagens = [
+    "Cada momento contigo é mágico 💖",
+    "Você faz meu coração sorrir todos os dias 🌹",
+    "Amo cada detalhe seu, mesmo os pequenos 💌"
+  ];
+  function mensagemRomantica() {
+    const msg = mensagens[Math.floor(Math.random() * mensagens.length)];
+    document.getElementById('romantic-msg').innerText = msg;
+  }
+
+  // ====== Galeria de Imagens ======
+  document.getElementById('imageInput').addEventListener('change', function() {
+    const gallery = document.getElementById('gallery');
+    gallery.innerHTML = '';
+    Array.from(this.files).forEach(file => {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const img = document.createElement('img');
+        img.src = e.target.result;
+        img.style.width = '150px';
+        img.style.height = '150px';
+        img.style.objectFit = 'cover';
+        img.style.borderRadius = '10px';
+        gallery.appendChild(img);
+      };
+      reader.readAsDataURL(file);
+    });
   });
-});
 </script>
+
+</body>
+</html>
