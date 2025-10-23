@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Gabriella — Um presente</title>
+<style>
+  /* ====== Reset & base ====== */
+  :root{
+    --bg-1: #0f1724;   /* deep navy */
+    --bg-2: #2b1462;   /* purple */
+    --accent: #ff6cab; /* pink */
+    --accent-2: #ffb3cf;
+    --card: rgba(255,255,255,0.04);
+    --glass: rgba(255,255,255,0.06);
+    --glass-2: rgba(255,255,255,0.03);
+    --text: #f4f4f8;
+    --muted: #c9c5d6;
+    --shadow: 0 10px 30px rgba(2,6,23,0.6);
+    --radius: 16px;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%; margin:0; font-family: Inter, "Segoe UI", Arial, sans-serif; background:
+    radial-gradient(800px 400px at 10% 10%, rgba(255,107,171,0.06), transparent),
+    linear-gradient(180deg,var(--bg-1),var(--bg-2)); color:var(--text); -webkit-font-smoothing:antialiased;}
+  a{color:inherit; text-decoration:none}
+  button{font:inherit}
+
+  /* ===== Layout ===== */
+  .app {
+    min-height:100vh;
+    display:grid;
+    grid-template-columns: 300px 1fr;
+    gap:28px;
+    padding:28px;
+    align-items:start;
+  }
+
+  /* Sidebar */
+  .sidebar{
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    border-radius: calc(var(--radius) + 4px);
+    padding:20px;
+    box-shadow: var(--shadow);
+    position:relative;
+    overflow:hidden;
+    border: 1px solid rgba(255,255,255,0.03);
+  }
+  .brand{
+    display:flex; gap:12px; align-items:center;
+  }
+  .logo{
+    width:56px; height:56px; border-radius:12px;
+    background:linear-gradient(135deg,var(--accent),var(--accent-2));
+    display:flex;align-items:center;justify-content:center;font-weight:700;color:#fff;font-size:20px;
+    box-shadow: 0 6px 18px rgba(255,107,171,0.13);
+  }
+  .brand h1{font-size:18px;margin:0}
+  .brand p{margin:0;font-size:12px;color:var(--muted)}
+
+  .sidebar .hint{
+    margin-top:18px;
+    background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,0.02);
+    font-size:13px;color:var(--muted);
+  }
+
+  /* keypad */
+  .pin {
+    margin-top:18px;
+    display:grid; grid-template-columns: repeat(3,1fr);
+    gap:10px;
+  }
+  .pin button{
+    background:var(--glass);
+    border:1px solid rgba(255,255,255,0.03);
+    color:var(--text);
+    padding:14px 10px;
+    border-radius:12px;
+    font-size:18px;
+    cursor:pointer;
+    transition: transform .12s ease, background .12s ease;
+  }
+  .pin button:active{ transform:translateY(2px); }
+  .pin .ok{ grid-column: span 3; background:linear-gradient(90deg,var(--accent),var(--accent-2)); color:#111; font-weight:700; }
+  .pinDisplay{
+    margin-top:14px; padding:10px 12px; border-radius:12px;
+    background: linear-gradient(90deg, rgba(255,255,255,0.02), transparent);
+    font-size:20px; text-align:center; letter-spacing:12px; color:var(--muted);
+  }
+
+  /* nav & back button */
+  .nav{
+    margin-top:20px; display:flex; flex-direction:column; gap:8px;
+  }
+  .nav button{
+    text-align:left; padding:10px 12px; border-radius:10px; background:transparent; color:var(--muted);
+    border:1px dashed rgba(255,255,255,0.02); cursor:pointer; transition: all .15s ease;
+  }
+  .nav button.active{ background:linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); color:var(--text); border-style:solid; border-color:rgba(255,107,171,0.12); }
+
+  /* Main content */
+  .content {
+    min-height:100vh;
+    display:flex; flex-direction:column;
+    gap:18px;
+  }
+  .welcome{
+    display:flex; justify-content:space-between; align-items:center; gap:12px;
+  }
+  .welcome .title{
+    font-size:22px; margin:0;
+  }
+  .welcome .subtitle{ color:var(--muted); font-size:14px }
+
+  /* cards grid */
+  .grid{
+    display:grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr));
+    gap:18px;
+  }
+  .card{
+    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+    border-radius:14px; padding:18px; box-shadow: 0 8px 24px rgba(2,6,23,0.6);
+    border:1px solid rgba(255,255,255,0.03);
+    transition: transform .18s ease, box-shadow .18s ease;
+    cursor:pointer;
+  }
+  .card:hover{ transform: translateY(-6px); box-shadow: 0 16px 40px rgba(2,6,23,0.8); }
+  .card h3{ margin:0 0 8px 0; font-size:16px; color:var(--accent-2) }
+  .card p{ margin:0; color:var(--muted) }
+
+  /* gallery */
+  .gallery{
+    display:grid; gap:12px;
+  }
+  .gallery .item{ display:flex; gap:12px; align-items:center; background:var(--card); padding:10px; border-radius:10px; border:1px solid rgba(255,255,255,0.02) }
+  .gallery img, .gallery video{ width:120px; height:80px; object-fit:cover; border-radius:8px; flex-shrink:0; }
+  .gallery .meta{ color:var(--muted); font-size:14px }
+
+  /* music player compact */
+  .player{
+    display:flex; align-items:center; gap:12px; background:linear-gradient(90deg, rgba(255,255,255,0.02), transparent);
+    padding:8px 10px; border-radius:10px; border:1px solid rgba(255,255,255,0.02);
+  }
+  .player .cover{ width:56px; height:56px; border-radius:8px; overflow:hidden; flex-shrink:0; }
+  .player .cover img{ width:100%; height:100%; object-fit:cover; display:block }
+  .player .meta{ flex:1; text-align:left }
+  .player .actions{ display:flex; gap:8px; align-items:center }
+
+  .btnCircle{
+    width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--glass);border:1px solid rgba(255,255,255,0.02);cursor:pointer;
+  }
+
+  /* countdown */
+  .counter{
+    display:flex; gap:12px; align-items:center; flex-wrap:wrap;
+  }
+  .timeUnit{ background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); padding:12px;border-radius:10px; min-width:80px; text-align:center }
+  .timeUnit .num{ font-size:22px; font-weight:800; color:var(--accent) }
+  .timeUnit .lbl{ font-size:12px; color:var(--muted); text-transform:uppercase; margin-top:6px }
+
+  /* envelope */
+  .envelopeWrap{ display:flex; gap:18px; align-items:flex-start; flex-wrap:wrap }
+  .envelopeCard{ background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); padding:18px; border-radius:12px; min-width:320px; border:1px solid rgba(255,255,255,0.02) }
+  .envelope{ width:300px; height:180px; position:relative; perspective:1000px; cursor:pointer }
+  .env-back, .env-front{ position:absolute; inset:0; border-radius:8px; overflow:hidden }
+  .env-back{ background:linear-gradient(180deg,#fff6fb,#ffeef8); transform: translateZ(-1px); }
+  .env-flap{ position:absolute; top:0; left:0; right:0; height:60%; background:linear-gradient(180deg,#ffb3cf,#ff6cab); clip-path:polygon(0 0,100% 0,50% 100%); transform-origin: top; transition: transform .9s cubic-bezier(.2,.8,.2,1); }
+  .env-front{ background:linear-gradient(180deg,#fff0f6,#fff6fb); clip-path: polygon(0 45%,100% 45%,100% 100%,0 100%); display:block; }
+  .letter{ position:absolute; left:6%; right:6%; bottom:2%; height:88%; background:#fff; border-radius:8px; transform: translateY(36%); opacity:0; padding:12px; overflow:auto; box-shadow: 0 10px 30px rgba(2,6,23,0.25); transition: all .9s cubic-bezier(.2,.8,.2,1); }
+  .envelope.open .env-flap{ transform: rotateX(180deg) translateY(-8px) }
+  .envelope.open .letter{ transform: translateY(-10%); opacity:1 }
+
+  /* hearts */
+  .hearts{ position:relative; height:120px; overflow:visible }
+  .heart{ position:absolute; width:14px; height:14px; transform: rotate(45deg); opacity:0; }
+  .heart::before,.heart::after{ content:''; position:absolute; width:14px;height:14px;border-radius:50%;background:var(--accent); }
+  .heart::before{ left:-7px; top:0 }
+  .heart::after{ left:0; top:-7px }
+
+  /* spoiler */
+  .spoiler{
+    display:flex; flex-direction:column; gap:8px; align-items:center; justify-content:center; padding:12px; border-radius:10px;
+  }
+  .spoiler button{ background:linear-gradient(90deg,var(--accent),var(--accent-2)); border:none; color:#111; padding:10px 14px; border-radius:10px; cursor:pointer; }
+
+  /* small screens */
+  @media (max-width:860px){
+    .app{ grid-template-columns:1fr; padding:18px; }
+    .sidebar{ order:2 }
+  }
+</style>
+</head>
+<body>
+<div class="app" id="appRoot">
+
+  <!-- SIDEBAR / LOGIN -->
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <div class="logo">G</div>
+      <div>
+        <h1>Gabriella 💜</h1>
+        <p>Um presente feito com carinho</p>
+      </div>
+    </div>
+
+    <div class="hint" id="greeting">Bem-vinda — digite a senha para entrar</div>
+
+    <div class="pinDisplay" id="pinDisplay">••••••</div>
+
+    <div class="pin" id="pinpad" aria-label="Teclado numérico">
+      <button data-key="1">1</button>
+      <button data-key="2">2</button>
+      <button data-key="3">3</button>
+      <button data-key="4">4</button>
+      <button data-key="5">5</button>
+      <button data-key="6">6</button>
+      <button data-key="7">7</button>
+      <button data-key="8">8</button>
+      <button data-key="9">9</button>
+      <button data-key="back">⌫</button>
+      <button data-key="0">0</button>
+      <button class="ok" data-key="ok">ENTRAR</button>
+    </div>
+
+    <div class="nav" id="sidebarNav" style="display:none">
+      <button data-section="main" class="active">Inicio</button>
+      <button data-section="contador">Cronômetro</button>
+      <button data-section="momentos">Linha do Tempo</button>
+      <button data-section="palhacas">Palhaçadas</button>
+      <button data-section="carta">Cartinha</button>
+      <button data-section="home" id="logoutBtn">Sair</button>
+    </div>
+
+    <div style="height:12px"></div>
+    <div style="font-size:12px;color:var(--muted)">Dica: é uma data especial.</div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="content" id="mainContent" aria-live="polite">
+
+    <!-- WELCOME / HOME -->
+    <section id="main" role="region">
+      <div class="welcome">
+        <div>
+          <h2 class="title">Olá, meu amor 💜</h2>
+          <div class="subtitle">Escolha uma das caixinhas abaixo para reviver nossos momentos.</div>
+        </div>
+        <div style="display:flex;gap:10px;align-items:center">
+          <div style="font-size:12px;color:var(--muted)">Data do começo:</div>
+          <div style="background:linear-gradient(90deg, rgba(255,255,255,0.02), transparent); padding:8px 10px;border-radius:10px;color:var(--muted)">15/08/2025</div>
+        </div>
+      </div>
+
+      <div class="grid" style="margin-top:18px">
+        <div class="card" data-action="open" data-section="contador">
+          <h3>Cronômetro ⏳</h3>
+          <p>Acompanhe nosso tempo juntos com precisão e carinho.</p>
+        </div>
+
+        <div class="card" data-action="open" data-section="palhacas">
+          <h3>Palhaçadas 🤡</h3>
+          <p>Vídeos e risadas para sempre lembrar dos momentos bobos.</p>
+        </div>
+
+        <div class="card" data-action="open" data-section="momentos">
+          <h3>Linha do Tempo ⏱️</h3>
+          <p>Fotos, vídeos e trilhas sonoras — uma linha cheia de memórias.</p>
+        </div>
+
+        <div class="card" data-action="open" data-section="carta">
+          <h3>Cartinha do Amor 💌</h3>
+          <p>Uma carta com animação, corações e uma mensagem só sua.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- TIMELINE -->
+    <section id="momentos" style="display:none">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <h2 style="margin:0">Linha do Tempo</h2>
+        <div class="player" id="player1">
+          <div class="cover"><img src="PicPense.jpeg" alt="capa"></div>
+          <div class="meta"><strong>Pense em Mim</strong><div style="font-size:12px;color:var(--muted)">Jorge & Mateus</div></div>
+          <div class="actions">
+            <button class="btnCircle" data-play="momentosAudio">▶</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="gallery" style="margin-top:14px">
+        <div class="item">
+          <img src="us48.jpeg" alt="us1">
+          <div class="meta"><strong>Onde tudo começou</strong><div style="margin-top:6px;color:var(--muted)">Aquela primeira foto que guardo no coração.</div></div>
+        </div>
+
+        <div class="item">
+          <img src="us1.jpeg" alt="us2">
+          <div class="meta"><strong>A primeira mensagem</strong><div style="margin-top:6px;color:var(--muted)">O momento em que tudo mudou.</div></div>
+        </div>
+
+        <div class="item">
+          <img src="us2.jpeg" alt="us3">
+          <div class="meta"><strong>O meu golpe</strong><div style="margin-top:6px;color:var(--muted)">Sorriso que nunca esqueço.</div></div>
+        </div>
+
+        <div class="item">
+          <video controls preload="metadata" poster="video1.jpeg"><source src="video1.mp4" type="video/mp4">Seu navegador não suporta vídeo.</video>
+          <div class="meta"><strong>Um vídeo especial</strong><div style="margin-top:6px;color:var(--muted)">Teste de um dia inesquecível.</div></div>
+        </div>
+
+        <div class="item spoiler">
+          <div style="text-align:center;width:100%">
+            <button id="showSpoiler">CLIQUE AQUI — SPOILER ❤️</button>
+            <div id="spoilerArea" style="display:none;margin-top:10px">
+              <img src="TheUs.jpeg" alt="spoiler" style="width:100%;border-radius:8px;margin-bottom:8px">
+              <div style="color:var(--muted)"><strong>Eu ainda vou casar com você. 💍</strong></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PALHAÇADAS -->
+    <section id="palhacas" style="display:none">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <h2 style="margin:0">Palhaçadas</h2>
+        <div class="player" id="player2">
+          <div class="cover"><img src="PicMessy.jpg" alt="messy"></div>
+          <div class="meta"><strong>Messy</strong><div style="font-size:12px;color:var(--muted)">Lola Young</div></div>
+          <div class="actions">
+            <button class="btnCircle" data-play="palhacasAudio">▶</button>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:14px" class="gallery">
+        <div class="item">
+          <video controls preload="metadata" poster="video2.jpeg"><source src="video2.mp4" type="video/mp4">Seu navegador não suporta vídeo.</video>
+          <div class="meta"><strong>Vídeo engraçado</strong><div style="margin-top:6px;color:var(--muted)">Risos infinitos.</div></div>
+        </div>
+
+        <div class="item">
+          <img src="us3.jpeg" alt="us4">
+          <div class="meta"><strong>Foto boba</strong><div style="margin-top:6px;color:var(--muted)">Momentos simples, amor grande.</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTADOR -->
+    <section id="contador" style="display:none">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <h2 style="margin:0">Cronômetro do Nosso Amor</h2>
+        <div class="player" id="player3">
+          <div class="cover"><img src="PicEyes.jpeg" alt="thoseeyes"></div>
+          <div class="meta"><strong>Those Eyes</strong><div style="font-size:12px;color:var(--muted)">New West</div></div>
+          <div class="actions">
+            <button class="btnCircle" data-play="calendarioAudio">▶</button>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:18px" class="counter">
+        <div class="timeUnit"><div class="num" id="anos">0</div><div class="lbl">Anos</div></div>
+        <div class="timeUnit"><div class="num" id="meses">0</div><div class="lbl">Meses</div></div>
+        <div class="timeUnit"><div class="num" id="dias">0</div><div class="lbl">Dias</div></div>
+        <div class="timeUnit"><div class="num" id="horas">00</div><div class="lbl">Horas</div></div>
+        <div class="timeUnit"><div class="num" id="minutos">00</div><div class="lbl">Minutos</div></div>
+        <div class="timeUnit"><div class="num" id="segundos">00</div><div class="lbl">Segundos</div></div>
+      </div>
+
+      <div style="margin-top:14px;background:linear-gradient(90deg, rgba(255,255,255,0.02), transparent);padding:12px;border-radius:10px;">
+        <div style="font-size:14px;color:var(--muted)"><em>✨ Juntos desde <span id="sinceLabel">15/08/2025</span> ✨</em></div>
+        <div style="margin-top:8px;color:var(--muted)">Cada segundo que passa eu lembro de você.</div>
+      </div>
+    </section>
+
+    <!-- CARTINHA -->
+    <section id="carta" style="display:none">
+      <div style="display:flex;gap:18px;flex-wrap:wrap">
+        <div class="envelopeCard">
+          <h2 style="margin-top:0">Cartinha do Amor</h2>
+          <div style="margin-top:12px" class="envelopeWrap">
+            <div class="envelope" id="envelope" role="button" tabindex="0" aria-label="Abrir cartinha">
+              <div class="env-back"></div>
+              <div class="env-flap"></div>
+              <div class="env-front"></div>
+              <div class="letter">
+                <div style="font-size:15px;color:#2b2b2b">
+                  <p>Minha gatinha,</p>
+                  <p>Desde o primeiro olhar você virou minha melhor decisão. Cada dia contigo é uma nova sorte.</p>
+                  <p>Prometo rir com você, cuidar e construir sonhos juntos. Você é minha inspiração.</p>
+                  <p style="margin-top:12px;">Com amor,<br><strong>Seu Bobo Romântico</strong></p>
+                </div>
+              </div>
+            </div>
+
+            <div style="flex:1">
+              <div style="margin-bottom:10px;color:var(--muted)">Toque no envelope para abrir — há corações dentro!</div>
+              <div id="heartsAnchor" class="hearts" aria-hidden="true"></div>
+              <div style="margin-top:12px">
+                <div style="font-size:13px;color:var(--muted)">Trilha sugerida:</div>
+                <div class="player" style="margin-top:8px">
+                  <div class="cover"><img src="found.jpg" alt="found"></div>
+                  <div class="meta"><strong>Until I Found You</strong><div style="font-size:12px;color:var(--muted)">Stephen Sanchez</div></div>
+                  <div class="actions"><button class="btnCircle" data-play="cartaAudio">▶</button></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="min-width:260px">
+          <div style="background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); padding:12px; border-radius:10px; border:1px solid rgba(255,255,255,0.02)">
+            <h3 style="margin:0 0 6px 0">Mensagem especial</h3>
+            <div style="color:var(--muted)">Clique no botão abaixo para revelar uma surpresa.</div>
+            <div style="margin-top:10px">
+              <button id="surpriseBtn" style="background:linear-gradient(90deg,var(--accent),var(--accent-2));border:none;padding:10px 12px;border-radius:8px;cursor:pointer;color:#111">Revelar surpresa</button>
+              <div id="surpriseArea" style="display:none;margin-top:10px;color:var(--muted)"><strong>Você é minha pessoa favorita. Sempre.</strong></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- AUDIO ELEMENTS (same filenames so your files work) -->
+<audio id="momentosAudio" src="Jorge e Mateus - Pense em mim.mpeg" preload="auto"></audio>
+<audio id="palhacasAudio" src="Messy.mpeg" preload="auto"></audio>
+<audio id="calendarioAudio" src="Those Eyes.mpeg" preload="auto"></audio>
+<audio id="cartaAudio" src="Found.mpeg" preload="auto"></audio>
+<audio id="coldAudio" src="Clocks.mpeg" preload="auto"></audio>
+<audio id="elvisAudio" src="Elvis Presley - Cant Help Falling In Love.mp3" preload="auto"></audio>
+
+<script>
+/* ====== App behavior ====== */
+
+/* --- Login / PIN --- */
+const correctPin = "150825";
+let typed = "";
+const pinDisplay = document.getElementById('pinDisplay');
+const pinpad = document.getElementById('pinpad');
+const nav = document.getElementById('sidebarNav');
+const greeting = document.getElementById('greeting');
+
+function updatePinDisplay(){
+  if(!typed) pinDisplay.textContent = '••••••';
+  else pinDisplay.textContent = typed.padEnd(correctPin.length,'•');
+}
+pinpad.addEventListener('click', (e)=>{
+  const btn = e.target.closest('button');
+  if(!btn) return;
+  const key = btn.dataset.key;
+  if(key === 'back'){ typed = typed.slice(0,-1); updatePinDisplay(); return; }
+  if(key === 'ok'){
+    if(typed === correctPin){ unlock(); } else { alert('Senha incorreta 💔'); typed=''; updatePinDisplay(); }
+    return;
+  }
+  if(typed.length < correctPin.length){ typed += key; updatePinDisplay(); }
+});
+
+function unlock(){
+  // show nav, switch to main
+  nav.style.display = 'flex';
+  document.getElementById('main').style.display = 'block';
+  document.querySelectorAll('section[id!="main"]').forEach(s=>{ if(s.id!=='main') s.style.display='none'});
+  document.getElementById('sidebarNav').querySelector('[data-section="main"]').classList.add('active');
+  greeting.textContent = 'Seja bem-vinda, meu amor 💜';
+  pinpad.style.display = 'none';
+  updateHash('main');
+}
+
+/* logout */
+document.getElementById('logoutBtn').addEventListener('click', ()=>{
+  // reset UI
+  nav.style.display = 'none';
+  pinpad.style.display = 'grid';
+  typed=''; updatePinDisplay();
+  document.getElementById('main').style.display = 'none';
+  greeting.textContent = 'Bem-vinda — digite a senha para entrar';
+  updateHash('');
+});
+
+/* Hash navigation & sidebar buttons */
+const sections = ['main','contador','momentos','palhacas','carta'];
+document.querySelectorAll('[data-section]').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    const sec = btn.dataset.section;
+    if(sec==='home'){ document.getElementById('logoutBtn').click(); return; }
+    showSection(sec);
+  });
+});
+
+function showSection(id){
+  sections.forEach(s=>{
+    const el = document.getElementById(s);
+    if(!el) return;
+    el.style.display = (s===id ? 'block' : 'none');
+  });
+  // active state
+  document.querySelectorAll('[data-section]').forEach(b=>b.classList.toggle('active', b.dataset.section===id));
+  // update hash
+  updateHash(id);
+  stopAllMusic();
+}
+
+/* clicking cards */
+document.querySelectorAll('.card[data-action="open"]').forEach(card=>{
+  card.addEventListener('click', ()=> showSection(card.dataset.section));
+});
+
+/* hash handling */
+function updateHash(h){
+  if(h) history.replaceState(null,null,'#'+h);
+  else history.replaceState(null,null,location.pathname);
+}
+window.addEventListener('load', ()=>{
+  const h = location.hash.replace('#','');
+  if(h && sections.includes(h)){ // if already unlocked, don't auto-show
+    // if nav is hidden, show main until unlock
+    if(nav.style.display === 'flex'){ showSection(h); }
+    else { document.getElementById('main').style.display = 'block'; }
+  } else {
+    // initial: show nothing until unlock
+    document.querySelectorAll('main section, main > section').forEach(s=>s.style.display='none');
+    // show only main as placeholder
+    document.getElementById('main').style.display = 'none';
+  }
+});
+
+/* --- Audio players --- */
+const tracks = {
+  momentosAudio: document.getElementById('momentosAudio'),
+  palhacasAudio: document.getElementById('palhacasAudio'),
+  calendarioAudio: document.getElementById('calendarioAudio'),
+  cartaAudio: document.getElementById('cartaAudio'),
+  coldAudio: document.getElementById('coldAudio'),
+  elvisAudio: document.getElementById('elvisAudio')
+};
+let currentPlaying = null;
+let queue = [];
+
+function stopAllMusic(){
+  Object.values(tracks).forEach(a=>{ a.pause(); a.currentTime = 0; });
+  currentPlaying = null;
+  // reset any visual play buttons
+  document.querySelectorAll('[data-play]').forEach(b=>b.textContent = '▶');
+}
+
+function playTrack(id, btnElem){
+  stopAllMusic();
+  const audio = tracks[id];
+  if(!audio) return;
+  audio.play();
+  currentPlaying = id;
+  if(btnElem) btnElem.textContent = '⏸';
+  // when ends, play next in queue
+  audio.onended = ()=>{
+    if(queue.length){
+      const next = queue.shift();
+      const btn = document.querySelector(`[data-play="${next}"]`);
+      playTrack(next, btn);
+    } else {
+      currentPlaying = null;
+      document.querySelectorAll('[data-play]').forEach(b=>b.textContent='▶');
+    }
+  };
+}
+
+document.querySelectorAll('[data-play]').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    const id = btn.dataset.play;
+    if(currentPlaying === id){ // pause
+      tracks[id].pause(); btn.textContent = '▶'; currentPlaying=null;
+    } else {
+      playTrack(id, btn);
+    }
+  });
+});
+
+/* pause music when any video plays */
+document.querySelectorAll('video').forEach(v=>{
+  v.addEventListener('play', ()=>{
+    Object.keys(tracks).forEach(k=>{
+      if(!tracks[k].paused && !tracks[k].ended){
+        tracks[k].pause();
+      }
+    });
+    document.querySelectorAll('[data-play]').forEach(b=>b.textContent='▶');
+  });
+});
+
+/* --- Spoiler --- */
+document.getElementById('showSpoiler').addEventListener('click', ()=>{
+  document.getElementById('spoilerArea').style.display = 'block';
+  document.getElementById('showSpoiler').style.display = 'none';
+});
+
+/* --- Countdown --- */
+const startDate = new Date("2025-08-15T00:00:00");
+const fmt2 = n => String(n).padStart(2,'0');
+
+function atualizarContador(){
+  const agora = new Date();
+  let anos = agora.getFullYear() - startDate.getFullYear();
+  let meses = agora.getMonth() - startDate.getMonth();
+  let dias = agora.getDate() - startDate.getDate();
+
+  if(dias<0){
+    const lastDayPrev = new Date(agora.getFullYear(), agora.getMonth(), 0).getDate();
+    dias += lastDayPrev;
+    meses--;
+  }
+  if(meses<0){ meses += 12; anos--; }
+
+  const diffMs = agora - startDate;
+  let resto = diffMs % (1000 * 60 * 60 * 24);
+  const horas = Math.floor(resto/(1000*60*60)); resto -= horas*(1000*60*60);
+  const minutos = Math.floor(resto/(1000*60)); resto -= minutos*(1000*60);
+  const segundos = Math.floor(resto/1000);
+
+  document.getElementById("anos").textContent = anos;
+  document.getElementById("meses").textContent = meses;
+  document.getElementById("dias").textContent = dias;
+  document.getElementById("horas").textContent = fmt2(horas);
+  document.getElementById("minutos").textContent = fmt2(minutos);
+  document.getElementById("segundos").textContent = fmt2(segundos);
+
+  const dd = String(startDate.getDate()).padStart(2,'0');
+  const mm = String(startDate.getMonth()+1).padStart(2,'0');
+  const yyyy = startDate.getFullYear();
+  document.getElementById("sinceLabel").textContent = dd + '/' + mm + '/' + yyyy;
+}
+setInterval(atualizarContador,1000);
+atualizarContador();
+
+/* --- Envelope and hearts --- */
+const envelope = document.getElementById('envelope');
+const heartsAnchor = document.getElementById('heartsAnchor');
+
+function soltarCoracoes(qtd=8){
+  for(let i=0;i<qtd;i++){
+    const h = document.createElement('div');
+    h.className = 'heart';
+    const left = 30 + Math.random()*180;
+    h.style.left = left + 'px';
+    h.style.top = (80 + Math.random()*20) + 'px';
+    h.style.opacity = 0;
+    heartsAnchor.appendChild(h);
+    // animate
+    const animDur = 2400 + Math.random()*800;
+    h.animate([
+      { transform: 'translateY(0) scale(.8) rotate(45deg)', opacity:0 },
+      { transform: 'translateY(-140px) scale(1.1) rotate(45deg)', opacity:1 },
+      { transform: 'translateY(-260px) scale(1.4) rotate(45deg)', opacity:0 }
+    ], { duration: animDur, easing:'cubic-bezier(.2,.9,.2,1)'});
+    setTimeout(()=>h.remove(), animDur+50);
+  }
+}
+
+envelope.addEventListener('click', ()=>{
+  envelope.classList.toggle('open');
+  if(envelope.classList.contains('open')) soltarCoracoes(10);
+});
+envelope.addEventListener('keydown', (e)=>{ if(e.key === 'Enter' || e.key === ' ') { e.preventDefault(); envelope.click(); } });
+
+/* surprise button */
+document.getElementById('surpriseBtn').addEventListener('click', ()=>{
+  document.getElementById('surpriseArea').style.display = 'block';
+  document.getElementById('surpriseBtn').style.display = 'none';
+});
+
+/* small accessibility: allow keyboard numbers */
+window.addEventListener('keydown', (e)=>{
+  if(pinpad.style.display === 'grid'){
+    if(e.key >= '0' && e.key <= '9'){ if(typed.length < correctPin.length){ typed += e.key; updatePinDisplay(); } }
+    if(e.key === 'Backspace'){ typed = typed.slice(0,-1); updatePinDisplay(); }
+    if(e.key === 'Enter'){ if(typed === correctPin) unlock(); else { alert('Senha incorreta 💔'); typed=''; updatePinDisplay(); } }
+  }
+});
+</script>
+</body>
+</html>
