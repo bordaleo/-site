@@ -3,150 +3,254 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gabriella — Nosso Cantinho</title>
+<title>💖 Gabriella — Um Presente 💖</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 <style>
-  /* ====== Reset básico ====== */
-  * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Arial', sans-serif; }
-  body { display: flex; min-height: 100vh; background: #f5f0ff; color: #1b1b2f; }
+  body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    display: flex;
+    background: linear-gradient(135deg, #3b1053, #150f3b);
+    color: white;
+    overflow-x: hidden;
+  }
 
-  /* ====== Menu lateral ====== */
-  nav { width: 250px; background: #6a0dad; color: #fff; padding: 20px; display: flex; flex-direction: column; }
-  nav h2 { margin-bottom: 20px; text-align: center; }
-  nav a { color: #fff; text-decoration: none; padding: 10px; margin: 5px 0; border-radius: 5px; transition: background 0.3s; }
-  nav a:hover { background: rgba(255,255,255,0.2); }
+  /* ==== MENU LATERAL ==== */
+  nav {
+    width: 240px;
+    background: rgba(255, 255, 255, 0.08);
+    height: 100vh;
+    position: fixed;
+    backdrop-filter: blur(10px);
+    border-right: 1px solid rgba(255,255,255,0.1);
+    display: flex;
+    flex-direction: column;
+    padding-top: 30px;
+  }
 
-  /* ====== Conteúdo principal ====== */
-  main { flex: 1; padding: 30px; overflow-y: auto; }
+  nav h2 {
+    text-align: center;
+    font-size: 1.4em;
+    margin-bottom: 25px;
+    font-weight: 600;
+  }
 
-  /* ====== Seções ====== */
-  section { margin-bottom: 50px; }
-  h1, h2 { margin-bottom: 20px; }
-  p { margin-bottom: 15px; line-height: 1.6; }
+  nav a {
+    text-decoration: none;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 10px;
+    margin: 6px 15px;
+    transition: 0.3s;
+  }
 
-  /* ====== Botões ====== */
-  button { padding: 10px 20px; border: none; border-radius: 5px; background: #6a0dad; color: #fff; cursor: pointer; transition: background 0.3s; }
-  button:hover { background: #52008b; }
+  nav a:hover {
+    background: rgba(255,255,255,0.15);
+  }
 
-  /* ====== Quiz ====== */
-  .quiz-question { margin-bottom: 10px; }
-  .quiz-answer { margin: 5px 0; }
+  main {
+    margin-left: 260px;
+    padding: 30px;
+    width: calc(100% - 260px);
+    scroll-behavior: smooth;
+  }
 
-  /* ====== Lista de coisas que amo ====== */
-  .love-list { list-style: none; padding-left: 0; }
-  .love-list li { background: #e0c6ff; margin: 5px 0; padding: 10px; border-radius: 5px; }
+  section {
+    margin-bottom: 60px;
+  }
+
+  h1 {
+    font-size: 2em;
+    color: #ffaad4;
+  }
+
+  button {
+    background: #ff78c4;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 16px;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+  button:hover {
+    background: #ff4ca1;
+  }
+
+  /* ==== GALERIA ==== */
+  .gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+  }
+
+  .gallery img {
+    width: 100%;
+    border-radius: 12px;
+    transition: transform 0.4s ease;
+  }
+
+  .gallery img:hover {
+    transform: scale(1.05);
+  }
+
+  /* ==== EFEITO DE DIGITAÇÃO ==== */
+  #typing {
+    font-size: 1.2em;
+    white-space: pre-wrap;
+    line-height: 1.6;
+    min-height: 60px;
+  }
+
+  /* ==== CONTADOR ==== */
+  .counter {
+    font-size: 1.5em;
+    margin-top: 10px;
+    color: #ffd5ec;
+  }
+
+  /* ==== QUIZ ==== */
+  .quiz {
+    background: rgba(255,255,255,0.1);
+    padding: 20px;
+    border-radius: 15px;
+    max-width: 400px;
+  }
+
+  .quiz p {
+    margin-bottom: 10px;
+  }
+
+  /* ==== MENSAGEM ==== */
+  #msg {
+    font-size: 1.1em;
+    margin-top: 15px;
+    color: #ffd3ea;
+  }
 </style>
 </head>
 <body>
+  <nav>
+    <h2>💗 Menu 💗</h2>
+    <a href="#inicio">Início</a>
+    <a href="#contagem">Nosso Tempo</a>
+    <a href="#amo">Coisas que Amo</a>
+    <a href="#memorias">Nossas Memórias</a>
+    <a href="#quiz">Quiz</a>
+    <a href="#mensagem">Mensagens</a>
+  </nav>
 
-<!-- MENU LATERAL -->
-<nav>
-  <h2>Nosso Cantinho</h2>
-  <a href="#sobre">Sobre Nós</a>
-  <a href="#quiz">Quiz Sobre Nós</a>
-  <a href="#coisas">Coisas que Amo em Você</a>
-  <a href="#mensagens">Mensagens Românticas</a>
-  <a href="#imagens">Galeria</a>
-</nav>
+  <main>
+    <!-- INÍCIO -->
+    <section id="inicio">
+      <h1>💖 Oi, minha Gabriella 💖</h1>
+      <p>Este é um cantinho feito com amor, só pra nós dois. Cada pedacinho aqui representa o quanto você é especial pra mim.</p>
+    </section>
 
-<!-- CONTEÚDO PRINCIPAL -->
-<main>
-  <!-- SOBRE NÓS -->
-  <section id="sobre">
-    <h1>Sobre Nós</h1>
-    <p>Este cantinho é nosso. Aqui guardamos lembranças, risadas e momentos especiais. Tudo que criamos é para celebrar o que somos juntos.</p>
-    <p>Transformamos a nossa história em pequenas surpresas e interações que tornam o dia a dia mais divertido e romântico.</p>
-  </section>
+    <!-- CONTAGEM -->
+    <section id="contagem">
+      <h1>⏳ Nosso tempo juntos</h1>
+      <p>Já se passaram...</p>
+      <div class="counter" id="counter"></div>
+    </section>
 
-  <!-- QUIZ SOBRE NÓS -->
-  <section id="quiz">
-    <h1>Quiz Sobre Nós</h1>
-    <div id="quiz-container">
-      <div class="quiz-question">
-        <p>Qual nosso filme favorito juntos?</p>
-        <button onclick="responder('Correto!')">Resposta 1</button>
-        <button onclick="responder('Tente de novo!')">Resposta 2</button>
-        <button onclick="responder('Tente de novo!')">Resposta 3</button>
+    <!-- AMO -->
+    <section id="amo">
+      <h1>💞 Coisas que amo em você</h1>
+      <div id="typing"></div>
+      <button onclick="startTyping()">Mostrar</button>
+    </section>
+
+    <!-- MEMÓRIAS -->
+    <section id="memorias">
+      <h1>📸 Nossas memórias</h1>
+      <div class="gallery">
+        <img src="https://picsum.photos/300/300?random=1" alt="">
+        <img src="https://picsum.photos/300/300?random=2" alt="">
+        <img src="https://picsum.photos/300/300?random=3" alt="">
+        <img src="https://picsum.photos/300/300?random=4" alt="">
       </div>
-    </div>
-    <p id="quiz-feedback"></p>
-  </section>
+    </section>
 
-  <!-- COISAS QUE AMO EM VOCÊ -->
-  <section id="coisas">
-    <h1>Coisas que Amo em Você</h1>
-    <ul class="love-list" id="love-list">
-      <li>Seu sorriso</li>
-      <li>Seu jeito de me ouvir</li>
-      <li>Como você me faz rir</li>
-    </ul>
-    <input type="text" id="new-love" placeholder="Adicionar algo que amo..." />
-    <button onclick="adicionarAmor()">Adicionar</button>
-  </section>
+    <!-- QUIZ -->
+    <section id="quiz">
+      <h1>💌 Quiz sobre nós</h1>
+      <div class="quiz">
+        <p><b>1.</b> Onde foi nosso primeiro encontro?</p>
+        <button onclick="checkQuiz(1, true)">No parque 🌳</button>
+        <button onclick="checkQuiz(1, false)">No shopping 🛍️</button>
 
-  <!-- MENSAGENS ROMÂNTICAS -->
-  <section id="mensagens">
-    <h1>Mensagens Românticas</h1>
-    <p id="romantic-msg">Clique no botão para receber uma mensagem especial 💌</p>
-    <button onclick="mensagemRomantica()">Gerar Mensagem</button>
-  </section>
+        <p><b>2.</b> Quem se apaixonou primeiro? 😏</p>
+        <button onclick="checkQuiz(2, true)">Você 💖</button>
+        <button onclick="checkQuiz(2, false)">Eu 😅</button>
 
-  <!-- GALERIA -->
-  <section id="imagens">
-    <h1>Galeria de Momentos</h1>
-    <p>Aqui você pode adicionar imagens de nossos melhores momentos.</p>
-    <input type="file" id="imageInput" accept="image/*" multiple />
-    <div id="gallery" style="display:flex; flex-wrap: wrap; gap:10px; margin-top:10px;"></div>
-  </section>
-</main>
+        <p id="quizResult" style="margin-top:10px;"></p>
+      </div>
+    </section>
 
-<script>
-  // ====== Função do Quiz ======
-  function responder(msg) {
-    document.getElementById('quiz-feedback').innerText = msg;
-  }
+    <!-- MENSAGEM -->
+    <section id="mensagem">
+      <h1>💬 Mensagem aleatória</h1>
+      <button onclick="showMessage()">Mostrar 💌</button>
+      <div id="msg"></div>
+    </section>
+  </main>
 
-  // ====== Adicionar coisas que amo ======
-  function adicionarAmor() {
-    const input = document.getElementById('new-love');
-    const value = input.value.trim();
-    if(value) {
-      const li = document.createElement('li');
-      li.textContent = value;
-      document.getElementById('love-list').appendChild(li);
-      input.value = '';
+  <script>
+    // ==== CONTADOR DE DIAS ====
+    const startDate = new Date("2023-02-14");
+    const counterEl = document.getElementById("counter");
+    function updateCounter() {
+      const today = new Date();
+      const diff = today - startDate;
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      counterEl.textContent = `${days} dias de amor 💞`;
     }
-  }
+    updateCounter();
 
-  // ====== Mensagens Românticas ======
-  const mensagens = [
-    "Cada momento contigo é mágico 💖",
-    "Você faz meu coração sorrir todos os dias 🌹",
-    "Amo cada detalhe seu, mesmo os pequenos 💌"
-  ];
-  function mensagemRomantica() {
-    const msg = mensagens[Math.floor(Math.random() * mensagens.length)];
-    document.getElementById('romantic-msg').innerText = msg;
-  }
+    // ==== EFEITO DE DIGITAÇÃO ====
+    const text = "Seu sorriso ilumina meus dias.\nSeu abraço é meu lugar favorito.\nSua voz me acalma.\nVocê é o meu motivo.";
+    let i = 0;
+    function startTyping() {
+      i = 0;
+      document.getElementById("typing").textContent = "";
+      type();
+    }
+    function type() {
+      if (i < text.length) {
+        document.getElementById("typing").textContent += text.charAt(i);
+        i++;
+        setTimeout(type, 40);
+      }
+    }
 
-  // ====== Galeria de Imagens ======
-  document.getElementById('imageInput').addEventListener('change', function() {
-    const gallery = document.getElementById('gallery');
-    gallery.innerHTML = '';
-    Array.from(this.files).forEach(file => {
-      const reader = new FileReader();
-      reader.onload = function(e) {
-        const img = document.createElement('img');
-        img.src = e.target.result;
-        img.style.width = '150px';
-        img.style.height = '150px';
-        img.style.objectFit = 'cover';
-        img.style.borderRadius = '10px';
-        gallery.appendChild(img);
-      };
-      reader.readAsDataURL(file);
-    });
-  });
-</script>
+    // ==== QUIZ ====
+    let score = 0;
+    function checkQuiz(q, correct) {
+      if (correct) {
+        score++;
+      }
+      if (q === 2) {
+        document.getElementById("quizResult").textContent = 
+          `Você acertou ${score}/2 💕`;
+        score = 0;
+      }
+    }
 
+    // ==== MENSAGEM ALEATÓRIA ====
+    const msgs = [
+      "Você é o amor da minha vida ❤️",
+      "Cada momento contigo é perfeito 💫",
+      "Não existe dia ruim ao seu lado ☀️",
+      "Te amo mais do que ontem, menos que amanhã 💗",
+      "Meu coração é seu, pra sempre 💞"
+    ];
+    function showMessage() {
+      const msg = msgs[Math.floor(Math.random() * msgs.length)];
+      document.getElementById("msg").textContent = msg;
+    }
+  </script>
 </body>
 </html>
